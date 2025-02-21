@@ -25,8 +25,8 @@ jobs:
     - name: Update README with Images
       run: |
         # Set variables
-        README_FILE="README.md"
-        IMAGES_DIR="Images"
+        README_FILE=".README.md"
+        IMAGES_DIR="./Images"
         IMAGE_MARKUP=""
 
         # Clear the README file
@@ -69,5 +69,5 @@ jobs:
           git commit -m "Update README with images from the images directory" || echo "No changes to commit"
           git push
         else
-          echo "$README_FILE does not exist in the repository's root directory."
+          echo "README_FILE does not exist in the repository's root directory."
         fi
