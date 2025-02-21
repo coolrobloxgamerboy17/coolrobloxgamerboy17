@@ -34,24 +34,35 @@ jobs:
         beforeCont="# free cool stuff\n"
         afterCont="<sub><sup> i legit spent ages automating ts (and its on a new line)</sup></sub>"
 
+        declare -A imageGroups
         if [ -d "$imagesDir" ]; then
           for image in "$imagesDir"/*; do
             if [[ "$image" == *.jpg || "$image" == *.jpeg || "$image" == *.png || "$image" == *.gif ]]; then
-              imageName=$(basename "$image")
-              imageUrl="https://raw.githubusercontent.com/${{ github.repository }}/main/$imagesDir/$imageName"
-              profileLink="https://github.com/${{ github.repository }}"
-
-              imageMark+="[<image src=\"$imageUrl\" width=\"${size[0]}\" height=\"${size[1]}\">]($profileLink)\n"
+              ext="${image##*.}"
+              ext="${ext,,}" # Convert to lowercase
+              imageGroups["$ext"]+="$image "
             fi
           done
         fi
 
-        echo -e "$beforeCont" >> "$readFile"
-        if [ -n "$imageMark" ]; then
+        for ext in "${!imageGroups[@]}"; do
+          images="${imageGroups[$ext]}"
+          echo "### Images of type .$ext" >> "$readFile"
+          for image in $images; do
+            imageName=$(basename "$image")
+            imageUrl="https://raw.githubusercontent.com/${{ github.repository }}/main/$imagesDir/$imageName"
+            profileLink="https://github.com/${{ github.repository }}"
+
+            imageMark+="[<img src=\"$imageUrl\" width=\"${size[0]}\" height=\"${size[1]}\">]($profileLink)\n"
+          done
           echo -e "$imageMark" >> "$readFile"
-        else
+          imageMark="" # Reset for next type
+        done
+
+        if [ -z "$imageMark" ]; then
           echo "no images found"
         fi
+
         echo -e "$afterCont" >> "$readFile"
 
     - name: Commit changes
