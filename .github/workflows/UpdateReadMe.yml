@@ -28,7 +28,6 @@ jobs:
         README_FILE="README.md"
         IMAGES_DIR="Images"
         IMAGE_MARKUP=""
-        BEFORE_CONTENT="# Before Images\n\n"  # Add your markdown content before images
 
         # Clear the README file
         > "$README_FILE"  # Truncate the README file to clear its contents
