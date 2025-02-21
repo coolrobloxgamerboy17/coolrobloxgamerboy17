@@ -29,6 +29,11 @@ jobs:
         IMAGES_DIR="Images"
         IMAGE_MARKUP=""
 
+        > "$README_FILE"
+
+        BEFORE_CONTENT="# Before Images\n\n"  # Add your markdown content before images
+        AFTER_CONTENT="# After Images\n\n"  # Add your markdown content after images
+
         # Check if images directory exists
         if [ -d "$IMAGES_DIR" ]; then
           # Loop through all images in the images directory
@@ -47,6 +52,7 @@ jobs:
           done
         fi
 
+        echo -e "$BEFORE_CONTENT" >> "$README_FILE"
         # Check if IMAGE_MARKUP is not empty before appending to README
         if [ -n "$IMAGE_MARKUP" ]; then
           # Append images to the README file
