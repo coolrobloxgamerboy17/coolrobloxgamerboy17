@@ -51,7 +51,6 @@ jobs:
           done
         fi
 
-        echo -e "$BEFORE_CONTENT" >> "$README_FILE"
         # Check if IMAGE_MARKUP is not empty before appending to README
         if [ -n "$IMAGE_MARKUP" ]; then
           # Append images to the README file
