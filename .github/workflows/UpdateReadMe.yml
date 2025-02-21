@@ -52,8 +52,10 @@ jobs:
           for image in $images; do
             imageName=$(basename "$image")
             imageUrl="https://raw.githubusercontent.com/${{ github.repository }}/main/$imagesDir/$imageName"
+            imageUrlTwo="https://github.com/${{ github.repository }}/blob/main/$imagesDir/$imageName"
             profileLink="https://github.com/${{ github.repository }}"
-            imageMark+="[<img src=\"$imageUrl\" width=\"${size[0]}\" height=\"${size[1]}\">]($imageUrl) "
+
+            imageMark+="[<img src=\"$imageUrl\" width=\"${size[0]}\" height=\"${size[1]}\">]($imageUrlTwo) "
           done
         done
 
