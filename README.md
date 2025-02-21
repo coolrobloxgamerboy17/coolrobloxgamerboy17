@@ -1,1 +1,1 @@
-[![sup nga]([https://avatars.githubusercontent.com/u/49816567?s=96&v=4](https://avatars.githubusercontent.com/u/200163700?s=400&u=dd72fde0e26e5b7d8a1ab4caa926f6b57829b885&v=4))](https://github.com/coolrobloxgamerboy17/)
+[![sup nga](https://avatars.githubusercontent.com/u/200163700)](https://github.com/coolrobloxgamerboy17/)
