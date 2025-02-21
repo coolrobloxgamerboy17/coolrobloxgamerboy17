@@ -35,8 +35,11 @@ jobs:
           for img in "$IMAGES_DIR"/*; do
             # Check if the file is an image (you can customize this check)
             if [[ "$img" == *.jpg || "$img" == *.jpeg || "$img" == *.png || "$img" == *.gif ]]; then
-              # Construct the image URL and profile link
-              IMAGE_URL="${{ github.repository }}/$img?raw=true"  # Adjust for raw image URL
+              # Construct the raw image URL
+              IMAGE_NAME=$(basename "$img")  # Get the image file name
+              IMAGE_URL="https://raw.githubusercontent.com/${{ github.repository }}/main/$IMAGES_DIR/$IMAGE_NAME"  # Update this based on your branch
+
+              # Set your profile link
               PROFILE_LINK="https://github.com/${{ github.repository }}"  # Adjust to your profile link
 
               # Add image markup to the IMAGE_MARKUP variable
@@ -59,10 +62,10 @@ jobs:
       run: |
         git config --local user.name "GitHub Action"
         git config --local user.email "action@github.com"
-        if [ -f "README.md" ]; then
-          git add "README.md"
+        if [ -f "$README_FILE" ]; then
+          git add "$README_FILE"
           git commit -m "Update README with images from the images directory" || echo "No changes to commit"
           git push
         else
-          echo "README.md does not exist in the repository's root directory."
+          echo "$README_FILE does not exist in the repository's root directory."
         fi
