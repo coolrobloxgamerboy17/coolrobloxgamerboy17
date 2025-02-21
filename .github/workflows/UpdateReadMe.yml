@@ -26,7 +26,7 @@ jobs:
       run: |
         # Set variables
         README_FILE="README.md"
-        IMAGES_DIR="Images"
+        IMAGES_DIR="images"
         IMAGE_MARKUP=""
 
         # Check if images directory exists
@@ -35,8 +35,12 @@ jobs:
           for img in "$IMAGES_DIR"/*; do
             # Check if the file is an image (you can customize this check)
             if [[ "$img" == *.jpg || "$img" == *.jpeg || "$img" == *.png || "$img" == *.gif ]]; then
-              # Add image markdown to the IMAGE_MARKUP variable
-              IMAGE_MARKUP+="\n![Image](./$img)\n"
+              # Construct the image URL and profile link
+              IMAGE_URL="${{ github.repository }}/$img?raw=true"  # Adjust for raw image URL
+              PROFILE_LINK="https://github.com/${{ github.repository }}"  # Adjust to your profile link
+
+              # Add image markup to the IMAGE_MARKUP variable
+              IMAGE_MARKUP+="[<img src=\"$IMAGE_URL\" width=\"86\" height=\"40\">]($PROFILE_LINK)\n"
             fi
           done
         fi
