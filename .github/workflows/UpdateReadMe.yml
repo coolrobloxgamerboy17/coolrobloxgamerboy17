@@ -14,6 +14,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Check README file existence
+      run: |
+        # Check if README.md exists in the root directory
+        if [ -f "README.md" ]; then
+          echo "README.md found."
+        else
+          echo "README.md not found in the root directory."
+        fi
+
     - name: Update README with Images
       run: |
         # Set variables
@@ -45,10 +54,10 @@ jobs:
       run: |
         git config --local user.name "GitHub Action"
         git config --local user.email "action@github.com"
-        if [ -f "$README_FILE" ]; then
-          git add "$README_FILE"
+        if [ -f "README.md" ]; then
+          git add "README.md"
           git commit -m "Update README with images from the images directory" || echo "No changes to commit"
           git push
         else
-          echo "$README_FILE does not exist."
+          echo "README.md does not exist in the repository's root directory."
         fi
