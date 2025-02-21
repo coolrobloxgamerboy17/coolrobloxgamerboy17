@@ -25,8 +25,8 @@ jobs:
     - name: Update README with Images
       run: |
         # Set variables
-        README_FILE="Files/README.md"  # Update this to the correct path
-        IMAGES_DIR="Images"  # Update this to the correct images directory
+        README_FILE="README.md"
+        IMAGES_DIR="images"
         IMAGE_MARKUP=""
 
         # Check if images directory exists
@@ -35,11 +35,10 @@ jobs:
           for img in "$IMAGES_DIR"/*; do
             # Check if the file is an image (you can customize this check)
             if [[ "$img" == *.jpg || "$img" == *.jpeg || "$img" == *.png || "$img" == *.gif ]]; then
-              # Construct the raw image URL
-              IMAGE_NAME=$(basename "$img")  # Get the image file name
-              IMAGE_URL="https://raw.githubusercontent.com/${{ github.repository }}/main/$IMAGES_DIR/$IMAGE_NAME"  # Update this based on your branch
-
-              # Set your profile link
+              # Extract image name from the path
+              IMAGE_NAME=$(basename "$img")
+              # Construct the image URL
+              IMAGE_URL="https://raw.githubusercontent.com/${{ github.repository }}/main/$IMAGES_DIR/$IMAGE_NAME"  # Ensure branch is correct
               PROFILE_LINK="https://github.com/${{ github.repository }}"  # Adjust to your profile link
 
               # Add image markup to the IMAGE_MARKUP variable
@@ -62,11 +61,10 @@ jobs:
       run: |
         git config --local user.name "GitHub Action"
         git config --local user.email "action@github.com"
-        if [ -f "$README_FILE" ]; then
-          git add "$README_FILE"
+        if [ -f "README.md" ]; then
+          git add "README.md"
           git commit -m "Update README with images from the images directory" || echo "No changes to commit"
           git push
         else
-          echo "$README_FILE does not exist in the repository's root directory."
-          ls -l  # List files in the current directory for further debugging
+          echo "README.md does not exist in the repository's root directory."
         fi
