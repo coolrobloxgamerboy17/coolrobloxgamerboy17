@@ -11,4 +11,4 @@
 [<img src="https://raw.githubusercontent.com/coolrobloxgamerboy17/coolrobloxgamerboy17/main/Images/Something.png" width="86" height="40">](https://github.com/coolrobloxgamerboy17/coolrobloxgamerboy17)
 [<img src="https://raw.githubusercontent.com/coolrobloxgamerboy17/coolrobloxgamerboy17/main/Images/UpClose.jpg" width="86" height="40">](https://github.com/coolrobloxgamerboy17/coolrobloxgamerboy17)
 
-<sub><sup> i legit spent ages automating ts</sup></sub>
+<sub><sup> i legit spent ages automating ts (and its on a new line)</sup></sub>
