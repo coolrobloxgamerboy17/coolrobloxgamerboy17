@@ -34,6 +34,8 @@ jobs:
         beforeCont="# free cool stuff\n"
         afterCont="<sub><sup> i legit spent ages automating ts (and its on a new line)</sup></sub>"
 
+        echo -e "$beforeCont" >> "$readFile"
+
         declare -A imageGroups
         if [ -d "$imagesDir" ]; then
           for image in "$imagesDir"/*; do
@@ -47,7 +49,6 @@ jobs:
 
         for ext in "${!imageGroups[@]}"; do
           images="${imageGroups[$ext]}"
-          echo "### Images of type .$ext" >> "$readFile"
           for image in $images; do
             imageName=$(basename "$image")
             imageUrl="https://raw.githubusercontent.com/${{ github.repository }}/main/$imagesDir/$imageName"
@@ -56,13 +57,12 @@ jobs:
             imageMark+="[<img src=\"$imageUrl\" width=\"${size[0]}\" height=\"${size[1]}\">]($profileLink)\n"
           done
           echo -e "$imageMark" >> "$readFile"
-          imageMark="" # Reset for next type
+          imageMark=""
         done
 
         if [ -z "$imageMark" ]; then
           echo "no images found"
         fi
-
         echo -e "$afterCont" >> "$readFile"
 
     - name: Commit changes
