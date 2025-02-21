@@ -18,7 +18,7 @@ jobs:
       run: |
         # Set variables
         README_FILE="README.md"
-        IMAGES_DIR="Images"
+        IMAGES_DIR="images"
         IMAGE_MARKUP=""
 
         # Check if images directory exists
@@ -33,13 +33,22 @@ jobs:
           done
         fi
 
-        # Append images to the README file
-        echo -e "$IMAGE_MARKUP" >> "$README_FILE"
+        # Check if IMAGE_MARKUP is not empty before appending to README
+        if [ -n "$IMAGE_MARKUP" ]; then
+          # Append images to the README file
+          echo -e "$IMAGE_MARKUP" >> "$README_FILE"
+        else
+          echo "No images found in $IMAGES_DIR"
+        fi
 
     - name: Commit changes
       run: |
         git config --local user.name "GitHub Action"
         git config --local user.email "action@github.com"
-        git add "$README_FILE"
-        git commit -m "Update README with images from the images directory" || echo "No changes to commit"
-        git push
+        if [ -f "$README_FILE" ]; then
+          git add "$README_FILE"
+          git commit -m "Update README with images from the images directory" || echo "No changes to commit"
+          git push
+        else
+          echo "$README_FILE does not exist."
+        fi
