@@ -32,7 +32,7 @@ jobs:
         > "$README_FILE"
 
         BEFORE_CONTENT="# free cool stuff\n"  # Add your markdown content before images
-        AFTER_CONTENT="$(echo -n "<sub><sup> i legit spent ages automating ts</sup></sub>")"
+        AFTER_CONTENT="<sub><sup> i legit spent ages automating ts (and its on a new line)</sup></sub>"
 
         # Check if images directory exists
         if [ -d "$IMAGES_DIR" ]; then
@@ -60,7 +60,7 @@ jobs:
         else
           echo "No images found in $IMAGES_DIR"
         fi
-        echo "$AFTER_CONTENT" >> "$README_FILE"
+        echo -e "$AFTER_CONTENT" >> "$README_FILE"
 
     - name: Commit changes
       env:
