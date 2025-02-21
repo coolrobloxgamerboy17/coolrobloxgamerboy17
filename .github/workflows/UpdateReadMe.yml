@@ -53,8 +53,7 @@ jobs:
             imageName=$(basename "$image")
             imageUrl="https://raw.githubusercontent.com/${{ github.repository }}/main/$imagesDir/$imageName"
             profileLink="https://github.com/${{ github.repository }}"
-
-            imageMark+="[<img src=\"$imageUrl\" width=\"${size[0]}\" height=\"${size[1]}\">]($profileLink) "
+            imageMark+="[<img src=\"$imageUrl\" width=\"${size[0]}\" height=\"${size[1]}\">]($imageUrl) "
           done
         done
 
