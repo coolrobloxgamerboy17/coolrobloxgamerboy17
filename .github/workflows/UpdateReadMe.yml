@@ -26,7 +26,7 @@ jobs:
       run: |
         # Set variables
         README_FILE="README.md"
-        IMAGES_DIR="images"
+        IMAGES_DIR="Images"
         IMAGE_MARKUP=""
 
         # Check if images directory exists
