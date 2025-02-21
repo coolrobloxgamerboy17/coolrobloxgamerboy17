@@ -61,8 +61,6 @@ jobs:
         else
           echo "No images found in $IMAGES_DIR"
         fi
-        
-        echo -e "$AFTER_CONTENT" >> "$README_FILE"
 
     - name: Commit changes
       env:
