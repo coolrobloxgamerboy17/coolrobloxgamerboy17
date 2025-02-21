@@ -28,8 +28,11 @@ jobs:
         README_FILE="README.md"
         IMAGES_DIR="Images"
         IMAGE_MARKUP=""
+        BEFORE_CONTENT="# Before Images\n\n"  # Add your markdown content before images
+        AFTER_CONTENT="# After Images\n\n"  # Add your markdown content after images
 
-        > "$README_FILE"
+        # Clear the README file
+        > "$README_FILE"  # Truncate the README file to clear its contents
 
         # Check if images directory exists
         if [ -d "$IMAGES_DIR" ]; then
@@ -49,6 +52,9 @@ jobs:
           done
         fi
 
+        # Append before content to README
+        echo -e "$BEFORE_CONTENT" >> "$README_FILE"
+
         # Check if IMAGE_MARKUP is not empty before appending to README
         if [ -n "$IMAGE_MARKUP" ]; then
           # Append images to the README file
@@ -57,16 +63,19 @@ jobs:
           echo "No images found in $IMAGES_DIR"
         fi
 
+        # Append after content to README
+        echo -e "$AFTER_CONTENT" >> "$README_FILE"
+
     - name: Commit changes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token for authentication
       run: |
         git config --local user.name "GitHub Action"
         git config --local user.email "action@github.com"
-        if [ -f "README.md" ]; then
-          git add "README.md"
+        if [ -f "$README_FILE" ]; then
+          git add "$README_FILE"
           git commit -m "Update README with images from the images directory" || echo "No changes to commit"
           git push
         else
-          echo "README.md does not exist in the repository's root directory."
+          echo "$README_FILE does not exist in the repository's root directory."
         fi
