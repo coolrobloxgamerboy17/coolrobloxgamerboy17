@@ -31,8 +31,8 @@ jobs:
 
         > "$README_FILE"
 
-        BEFORE_CONTENT="# Before Images\n\n"  # Add your markdown content before images
-        AFTER_CONTENT="# After Images\n\n"  # Add your markdown content after images
+        BEFORE_CONTENT="# free cool stuff\n"  # Add your markdown content before images
+        AFTER_CONTENT="<sub><sup> i legit spent ages automating ts</sup></sub>"  # Add your markdown content after images
 
         # Check if images directory exists
         if [ -d "$IMAGES_DIR" ]; then
@@ -60,10 +60,11 @@ jobs:
         else
           echo "No images found in $IMAGES_DIR"
         fi
+        echo -e "$AFTER_CONTENT" >> "$README_FILE"
 
     - name: Commit changes
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token for authentication
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config --local user.name "GitHub Action"
         git config --local user.email "action@github.com"
