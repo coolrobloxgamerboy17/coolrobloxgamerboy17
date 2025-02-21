@@ -25,8 +25,8 @@ jobs:
     - name: Update README with Images
       run: |
         # Set variables
-        README_FILE="README.md"
-        IMAGES_DIR="Images"
+        README_FILE="Files/README.md"  # Update this to the correct path
+        IMAGES_DIR="Images"  # Update this to the correct images directory
         IMAGE_MARKUP=""
 
         # Check if images directory exists
