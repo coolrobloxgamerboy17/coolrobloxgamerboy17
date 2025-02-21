@@ -1,41 +1,44 @@
-name: Update README with Images Folder
+name: Update README with Images
 
 on:
   push:
-    paths:
-      - 'Images/**'
-  schedule:
-    - cron: '0 0 * * *'  # Runs daily
+    branches:
+      - main  # Change this to your default branch if different
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Generate Image List
-        run: |
-          echo "## Images Folder Contents" > IMAGES.md
-          for file in Images/*; do
-            echo "- ![$(basename $file)](https://raw.githubusercontent.com/${{ github.repository }}/main/$file)" >> IMAGES.md
+    - name: Update README with Images
+      run: |
+        # Set variables
+        README_FILE="README.md"
+        IMAGES_DIR="images"
+        IMAGE_MARKUP=""
+
+        # Check if images directory exists
+        if [ -d "$IMAGES_DIR" ]; then
+          # Loop through all images in the images directory
+          for img in "$IMAGES_DIR"/*; do
+            # Check if the file is an image (you can customize this check)
+            if [[ "$img" == *.jpg || "$img" == *.jpeg || "$img" == *.png || "$img" == *.gif ]]; then
+              # Add image markdown to the IMAGE_MARKUP variable
+              IMAGE_MARKUP+="\n![Image](./$img)\n"
+            fi
           done
+        fi
 
-      - name: Update README
-        run: |
-          sed -i '/<!-- IMAGES_START -->/,/<!-- IMAGES_END -->/d' README.md
-          echo '<!-- IMAGES_START -->' >> README.md
-          cat IMAGES.md >> README.md
-          echo '<!-- IMAGES_END -->' >> README.md
+        # Append images to the README file
+        echo -e "$IMAGE_MARKUP" >> "$README_FILE"
 
-      - name: Commit and Push Changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add README.md
-          git commit -m "Updated README with latest images" || exit 0
-          git push origin main
+    - name: Commit changes
+      run: |
+        git config --local user.name "GitHub Action"
+        git config --local user.email "action@github.com"
+        git add "$README_FILE"
+        git commit -m "Update README with images from the images directory" || echo "No changes to commit"
+        git push
