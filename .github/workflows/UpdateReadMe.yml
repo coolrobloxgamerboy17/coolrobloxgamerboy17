@@ -40,28 +40,28 @@ jobs:
         if [ -d "$imagesDir" ]; then
           for image in "$imagesDir"/*; do
             if [[ "$image" == *.jpg || "$image" == *.jpeg || "$image" == *.png || "$image" == *.gif ]]; then
-              ext="${image##*.}"
-              ext="${ext,,}" # Convert to lowercase
-              imageGroups["$ext"]+="$image "
+              extension="${image##*.}"
+              extension="${extension,,}"
+              imageGroups["$extension"]+="$image "
             fi
           done
         fi
 
-        for ext in "${!imageGroups[@]}"; do
-          images="${imageGroups[$ext]}"
+        for extension in "${!imageGroups[@]}"; do
+          images="${imageGroups[$extension]}"
           for image in $images; do
             imageName=$(basename "$image")
             imageUrl="https://raw.githubusercontent.com/${{ github.repository }}/main/$imagesDir/$imageName"
             profileLink="https://github.com/${{ github.repository }}"
 
-            imageMark+="[<img src=\"$imageUrl\" width=\"${size[0]}\" height=\"${size[1]}\">]($profileLink)\n"
+            imageMark+="[<img src=\"$imageUrl\" width=\"${size[0]}\" height=\"${size[1]}\">]($profileLink) "
           done
-          echo -e "$imageMark" >> "$readFile"
-          imageMark=""
         done
 
         if [ -z "$imageMark" ]; then
           echo "no images found"
+        else
+          echo -e "$imageMark" >> "$readFile"
         fi
         echo -e "$afterCont" >> "$readFile"
 
