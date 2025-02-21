@@ -1,77 +1,71 @@
-name: Update README with Images
+name: Update README
 
 on:
   push:
     branches:
-      - main  # Change this to your default branch if different
-  workflow_dispatch:  # Allow manual triggering of the workflow
+      - main
+  workflow_dispatch:
 
 permissions:
-  contents: write  # Allows the workflow to push changes
+  contents: write
 
 jobs:
-  update-readme:
+  ProfessionalCrasherOuter:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Crashout Repo
       uses: actions/checkout@v2
 
-    - name: List repository contents
+    - name: List Crashout Victims
       run: |
-        echo "Listing contents of the repository:"
-        ls -R  # List all files recursively to see the directory structure
+        echo "\nListing contents of the repository:"
+        ls -R
 
-    - name: Update README with Images
+    - name: Update README
       run: |
-        # Set variables
-        README_FILE="README.md"
-        IMAGES_DIR="Images"
-        IMAGE_MARKUP=""
+        readFile="README.md" # also change it at the bottom
+        imagesDir="Images"
+        size=(86 40)
 
-        > "$README_FILE"
+        imageMark=""
+        > "$readFile"
 
-        BEFORE_CONTENT="# free cool stuff\n"  # Add your markdown content before images
-        AFTER_CONTENT="<sub><sup> i legit spent ages automating ts (and its on a new line)</sup></sub>"
+        beforeCont="# free cool stuff\n"
+        afterCont="<sub><sup> i legit spent ages automating ts (and its on a new line)</sup></sub>"
 
-        # Check if images directory exists
-        if [ -d "$IMAGES_DIR" ]; then
-          # Loop through all images in the images directory
-          for img in "$IMAGES_DIR"/*; do
-            # Check if the file is an image (you can customize this check)
-            if [[ "$img" == *.jpg || "$img" == *.jpeg || "$img" == *.png || "$img" == *.gif ]]; then
-              # Extract image name from the path
-              IMAGE_NAME=$(basename "$img")
-              # Construct the image URL
-              IMAGE_URL="https://raw.githubusercontent.com/${{ github.repository }}/main/$IMAGES_DIR/$IMAGE_NAME"  # Ensure branch is correct
-              PROFILE_LINK="https://github.com/${{ github.repository }}"  # Adjust to your profile link
+        if [ -d "$imagesDir" ]; then
+          for image in "$imagesDir"/*; do
+            if [[ "$image" == *.jpg || "$image" == *.jpeg || "$image" == *.png || "$image" == *.gif ]]; then
+              imageName=$(basename "$image")
+              imageUrl="https://raw.githubusercontent.com/${{ github.repository }}/main/$imagesDir/$imageName"
+              profileLink="https://github.com/${{ github.repository }}"
 
-              # Add image markup to the IMAGE_MARKUP variable
-              IMAGE_MARKUP+="[<img src=\"$IMAGE_URL\" width=\"86\" height=\"40\">]($PROFILE_LINK)\n"
+              imageMark+="[<image src=\"$imageUrl\" width=\"${size[0]}\" height=\"${size[1]}\">]($profileLink)\n"
             fi
           done
         fi
 
-        echo -e "$BEFORE_CONTENT" >> "$README_FILE"
-        # Check if IMAGE_MARKUP is not empty before appending to README
-        if [ -n "$IMAGE_MARKUP" ]; then
-          # Append images to the README file
-          echo -e "$IMAGE_MARKUP" >> "$README_FILE"
+        echo -e "$beforeCont" >> "$readFile"
+        if [ -n "$imageMark" ]; then
+          echo -e "$imageMark" >> "$readFile"
         else
-          echo "No images found in $IMAGES_DIR"
+          echo "no images found"
         fi
-        echo -e "$AFTER_CONTENT" >> "$README_FILE"
+        echo -e "$afterCont" >> "$readFile"
 
     - name: Commit changes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        readFile="README.md" # also change it at the top
+
         git config --local user.name "GitHub Action"
         git config --local user.email "action@github.com"
-        if [ -f "README.md" ]; then
-          git add "README.md"
-          git commit -m "Update README with images from the images directory" || echo "No changes to commit"
+        if [ -f "$readFile" ]; then
+          git add "$readFile"
+          git commit -m "Update README" || echo "no commit"
           git push
         else
-          echo "README.md does not exist in the repository's root directory."
+          echo "$readFile does not exist in the repository's root directory."
         fi
