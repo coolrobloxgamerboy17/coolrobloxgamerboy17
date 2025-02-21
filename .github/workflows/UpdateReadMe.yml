@@ -1,6 +1,7 @@
 name: Update README with Images Folder
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'Images/**'
