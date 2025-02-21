@@ -26,7 +26,7 @@ jobs:
       run: |
         # Set variables
         README_FILE="README.md"
-        IMAGES_DIR="Images"
+        IMAGES_DIR="images"
         IMAGE_MARKUP=""
 
         # Check if images directory exists
@@ -68,4 +68,5 @@ jobs:
           git push
         else
           echo "$README_FILE does not exist in the repository's root directory."
+          ls -l  # List files in the current directory for further debugging
         fi
