@@ -33,7 +33,7 @@ jobs:
 
       - name: Install Node.js and SimpleGit
         run: |
-          npm install -g simple-git
+          npm install -g simple-git moment jsonfile random
 
       - name: Create and Commit Files
         run: |
@@ -41,26 +41,34 @@ jobs:
           git clone https://github.com/${{ github.actor }}/coolrobloxgamerboy17.git
           cd coolrobloxgamerboy17
 
-          # Loop through years from 1999 to the current year
-          for year in $(seq 2009 $(date +%Y)); do
-            # Check if the commit already exists
+          # Function to generate random commit dates
+          make_commits() {
+            for year in $(seq 1999 $(date +%Y)); do
+              for ((i = 0; i < 100; i++)); do
+                x=$((RANDOM % 54))   # Random weeks
+                y=$((RANDOM % 7))    # Random days
+                date=$(date -d "$year-01-01 +$((x * 7 + y)) days" +"%Y-%m-%dT%H:%M:%S")
 
-            # Create a new file and write to it
-            echo "This is a commit for the year ${year}" > "commit_file_${year}.txt"
+                # Check if the commit for this date exists
+                if git rev-list -1 --count --all --grep="$date"; then
+                  echo "Commit for $date already exists. Skipping..."
+                  continue
+                fi
 
-            # Create a new branch for the year
-            git checkout -b "year-${year}"
+                # Create a new file and write to it
+                echo "{\"date\":\"$date\"}" > data.json
 
-            # Commit the file with a specific date
-            git add "commit_file_${year}.txt"
-            GIT_COMMITTER_DATE="${year}-01-01" git commit -m "Commit for ${year}"
+                # Commit the file with the generated date
+                git add data.json
+                GIT_COMMITTER_DATE="$date" git commit -m "Commit for $date" --date="$date"
 
-            # Push the commit to the repository
-            git push origin "year-${year}"
+                # Push the commit to the repository
+                git push origin main  # Push to main or change to your desired branch
+              done
+            done
+          }
 
-            # Return to the main branch for the next iteration
-            git checkout main
-          done
+          make_commits
 
           # Clean up
           cd ..
