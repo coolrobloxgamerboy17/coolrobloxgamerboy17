@@ -19,9 +19,7 @@ jobs:
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git config --global credential.helper store
-          echo "https://${{ secrets.GH_PAT }}@github.com" > ~/.git-credentials
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          echo "https://${{ secrets.PAT_TOKEN }}:x-oauth-basic@github.com" > ~/.git-credentials
 
       - name: Verify Git Authentication
         run: |
@@ -56,8 +54,8 @@ jobs:
                 git add data.json
                 GIT_COMMITTER_DATE="$date" git commit -m "Commit for $date" --date="$date"
 
-                # Push the commit to the repository
-                git push origin main  # Push to main or change to your desired branch
+                # Push the commit to the repository using the PAT in the URL
+                git push https://${{ secrets.PAT_TOKEN }}:x-oauth-basic@github.com/${{ github.actor }}/coolrobloxgamerboy17.git main
               done
             done
           }
