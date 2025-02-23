@@ -44,10 +44,6 @@ jobs:
           # Loop through years from 1999 to the current year
           for year in $(seq 1999 $(date +%Y)); do
             # Check if the commit already exists
-            if git rev-list -1 --count --all --grep="Commit for ${year}"; then
-              echo "Commit for ${year} already exists. Skipping..."
-              continue
-            fi
 
             # Create a new file and write to it
             echo "This is a commit for the year ${year}" > "commit_file_${year}.txt"
