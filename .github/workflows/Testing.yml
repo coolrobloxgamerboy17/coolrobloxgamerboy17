@@ -1,10 +1,10 @@
-name: Install and Authenticate Git
+name: Install and Commit with SimpleGit
 
 on:
   workflow_dispatch:  # Allows manual execution from the Actions tab
 
 jobs:
-  setup-and-test-git:
+  setup-and-commit:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,8 +25,47 @@ jobs:
 
       - name: Verify Git Authentication
         run: |
-          if git ls-remote https://github.com/${{ github.actor }}/coolrobloxgamerboy17.git &>/dev/null; then
+          if git ls-remote https://github.com/${{ github.actor }}/YourRepo.git &>/dev/null; then
             echo "Authentication Successful"
           else
             echo "Authentication Failed" && exit 1
           fi
+
+      - name: Install Node.js and SimpleGit
+        run: |
+          npm install -g simple-git
+
+      - name: Create and Commit Files
+        run: |
+          # Navigate to the repository
+          git clone https://github.com/${{ github.actor }}/YourRepo.git
+          cd YourRepo
+
+          # Loop through years from 1999 to the current year
+          for year in $(seq 1999 $(date +%Y)); do
+            # Check if the commit already exists
+            if git rev-list -1 --count --all --grep="Commit for ${year}"; then
+              echo "Commit for ${year} already exists. Skipping..."
+              continue
+            fi
+
+            # Create a new file and write to it
+            echo "This is a commit for the year ${year}" > "commit_file_${year}.txt"
+
+            # Create a new branch for the year
+            git checkout -b "year-${year}"
+
+            # Commit the file with a specific date
+            git add "commit_file_${year}.txt"
+            GIT_COMMITTER_DATE="${year}-01-01" git commit -m "Commit for ${year}"
+
+            # Push the commit to the repository
+            git push origin "year-${year}"
+
+            # Return to the main branch for the next iteration
+            git checkout main
+          done
+
+          # Clean up
+          cd ..
+          rm -rf YourRepo
