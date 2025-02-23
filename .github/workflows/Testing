@@ -1,0 +1,29 @@
+name: Install and Authenticate Git
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  setup-and-test-git:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Git
+        run: sudo apt update && sudo apt install -y git
+
+      - name: Check Git Version
+        run: git --version
+
+      - name: Authenticate with GitHub
+        run: |
+          git config --global user.name "YourUsername"
+          git config --global user.email "your-email@example.com"
+          git config --global credential.helper store
+          echo "https://$GH_PAT@github.com" > ~/.git-credentials
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+
+      - name: Verify Git Authentication
+        run: git ls-remote https://github.com/YourUsername/YourRepo.git
