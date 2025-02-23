@@ -68,4 +68,4 @@ jobs:
 
           # Clean up
           cd ..
-          rm -rf YourRepo
+          rm -rf coolrobloxgamerboy17
