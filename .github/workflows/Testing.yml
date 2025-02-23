@@ -49,12 +49,6 @@ jobs:
                 y=$((RANDOM % 7))    # Random days
                 date=$(date -d "$year-01-01 +$((x * 7 + y)) days" +"%Y-%m-%dT%H:%M:%S")
 
-                # Check if the commit for this date exists
-                if git rev-list -1 --count --all --grep="$date"; then
-                  echo "Commit for $date already exists. Skipping..."
-                  continue
-                fi
-
                 # Create a new file and write to it
                 echo "{\"date\":\"$date\"}" > data.json
 
