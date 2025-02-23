@@ -42,7 +42,7 @@ jobs:
           cd coolrobloxgamerboy17
 
           # Loop through years from 1999 to the current year
-          for year in $(seq 1999 $(date +%Y)); do
+          for year in $(seq 2009 $(date +%Y)); do
             # Check if the commit already exists
 
             # Create a new file and write to it
