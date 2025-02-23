@@ -1,9 +1,7 @@
 name: Install and Authenticate Git
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:  # Allows manual execution from the Actions tab
 
 jobs:
   setup-and-test-git:
@@ -26,4 +24,9 @@ jobs:
           GH_PAT: ${{ secrets.GH_PAT }}
 
       - name: Verify Git Authentication
-        run: git ls-remote https://github.com/${{ github.actor }}/coolrobloxgamerboy17.git
+        run: |
+          if git ls-remote https://github.com/${{ github.actor }}/coolrobloxgamerboy17.git &>/dev/null; then
+            echo "Authentication Successful"
+          else
+            echo "Authentication Failed" && exit 1
+          fi
