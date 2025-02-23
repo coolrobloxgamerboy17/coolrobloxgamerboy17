@@ -38,8 +38,8 @@ jobs:
       - name: Create and Commit Files
         run: |
           # Navigate to the repository
-          git clone https://github.com/${{ github.actor }}/YourRepo.git
-          cd YourRepo
+          git clone https://github.com/${{ github.actor }}/coolrobloxgamerboy17.git
+          cd coolrobloxgamerboy17
 
           # Loop through years from 1999 to the current year
           for year in $(seq 1999 $(date +%Y)); do
